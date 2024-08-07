@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Dashboard</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <style>
+    /* Add your custom CSS styles here */
+    .event-container {
+      background-color: #ffffff;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .event-container h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+
+    .event-details p {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="text-center mb-5">Event Dashboard</h1>
+    <div id="eventCards" class="row">
+      <!-- Event cards will be dynamically added here -->
+    </div>
+  </div>
+
+  <!-- Include Bootstrap and jQuery libraries -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <script>
+    // Function to fetch event data from the server
+    function fetchEvents() {
+      $.get("/events", function (data) {
+        // Clear existing event cards
+        $("#eventCards").empty();
+
+        // Loop through each event and create event cards
+        data.forEach(function (event) {
+          var eventCard = `
+                        <div class="col-md-4">
+                            <div class="event-container">
+                                <h3>${event.eventName}</h3>
+                                <div class="event-details">
+                                    <p><strong>Description:</strong> ${event.eventDescription
+            }</p>
+                                    <p><strong>Type:</strong> ${event.eventType
+            }</p>
+                                    <p><strong>Capacity:</strong> ${event.capacity
+            }</p>
+                                    <p><strong>Start Date/Time:</strong> ${new Date(
+              event.startDateTime
+            ).toLocaleString()}</p>
+                                    <p><strong>End Date/Time:</strong> ${new Date(
+              event.endDateTime
+            ).toLocaleString()}</p>
+                                    <p><strong>Ticket Price:</strong> $${event.ticketPrice
+            }</p>
+                                </div>
+                                <button class="register-button" data-event-name="${event.eventName
+            }" data-event-price="${event.ticketPrice
+            }">Register</button>
+                            </div>
+                        </div>
+                    `;
+          $("#eventCards").append(eventCard);
+        });
+      });
+    }
+
+    // Call fetchEvents function when the page loads
+    $(document).ready(function () {
+      fetchEvents();
+    });
+
+    // Add event listener for register buttons
+    $(document).on("click", ".register-button", function () {
+      const eventName = $(this).data("event-name");
+      const eventPrice = $(this).data("event-price");
+
+      // Create an order on the server and obtain the order ID
+      $.post("/create_order", { eventName, eventPrice }, function (data) {
+        // Initialize Razorpay checkout with obtained order ID
+        var options = {
+          key: "rzp_test_L0NVLagBVHWSaj",
+          amount: data.amount * 100, // Amount is in paisa
+          currency: "INR",
+          order_id: data.id,
+          name: "Event Registration",
+          description: "Registration for " + eventName,
+          image: "YOUR_LOGO_URL",
+          handler: function (response) {
+            // Handle successful payment
+            alert("Payment successful!");
+          },
+          prefill: {
+            name: "Your Name",
+            email: "your.email@example.com",
+          },
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.on("payment.failed", function (response) {
+          // Handle failed payment
+          alert("Payment failed!");
+        });
+        rzp1.open();
+      });
+    });
+  </script>
+</body>
+
+</html>

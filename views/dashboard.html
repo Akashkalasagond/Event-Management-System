@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event Management Dashboard</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+  <style>
+    body {
+      background-color: #f5f5f5;
+    }
+
+    .container {
+      margin-top: 50px;
+      object-fit: fill;
+      height: 100%;
+      width: 400%;
+    }
+
+    .event-container {
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      height: auto;
+      /* Auto height for variable content */
+      display: flex;
+      /* Use flexbox for layout */
+      flex-direction: column;
+      /* Arrange content vertically */
+      align-items: flex-start;
+      width: auto;
+      /* Allow image to adjust its width */
+      /* Limit image height */
+      /* Fit image inside its container while preserving aspect ratio */
+      /* Align items to the left */
+      position: relative;
+      /* Positioning for button */
+    }
+
+    .event-container img {
+      width: 100%;
+      /* Allow image to adjust its width */
+      /* Limit image height */
+      object-fit: cover;
+      /* Fit image inside its container while preserving aspect ratio */
+      margin-bottom: 10px;
+      height: 200px;
+      /* Add spacing below the image */
+    }
+
+    .event-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .event-details {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .status-toggle {
+      width: 50px;
+      height: 25px;
+      background-color: #ccc;
+      border-radius: 25px;
+      position: relative;
+    }
+
+    .status-toggle .status-circle {
+      width: 20px;
+      height: 20px;
+      background-color: #fff;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 5px;
+      transform: translateY(-50%);
+      transition: transform 0.3s ease-in-out;
+    }
+
+    .status-toggle.active .status-circle {
+      left: calc(100% - 25px);
+      /* Adjust position for active status */
+    }
+
+    .status-toggle .status-circle.red {
+      background-color: #ff6347;
+    }
+
+    .status-toggle .status-circle.green {
+      background-color: #7fff7f;
+    }
+
+    .view-button {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .event-details {
+      font-size: 16px;
+      margin-bottom: 20px;
+      /* Adjusted spacing */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="text-center mb-5">Event Management Dashboard</h1>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="event-container">
+          <img src="https://woxsen.edu.in/uploads/A20230816082233.webp" class="img-fluid mb-3" alt="Event Image" />
+          <div class="event-title">
+            <input type="text" class="event-name form-control" placeholder="Event Name" value="Sports Arena" disabled
+              required />
+          </div>
+          <div class="event-details">
+            <div>
+              Event Description:
+              <textarea class="event-description form-control" rows="3" placeholder="Event Description"
+                required></textarea>
+            </div>
+            <div>
+              Event Type:
+              <input type="text" class="event-type form-control" placeholder="Event Type" required />
+            </div>
+            <div>
+              Capacity:
+              <input type="number" class="capacity form-control" placeholder="Capacity" required />
+            </div>
+            <div>
+              Start Date/Time:
+              <input type="datetime-local" class="start-datetime form-control" required />
+            </div>
+            <div>
+              End Date/Time:
+              <input type="datetime-local" class="end-datetime form-control" required />
+            </div>
+            <div>
+              Ticket: $<input type="number" class="ticket-price form-control" placeholder="Ticket Price" required />
+            </div>
+            <div>
+              Venue:
+              <input type="text" class="event-type form-control" placeholder="Venue" required />
+            </div>
+          </div>
+          <button class="save-button">Save and Push</button>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="event-container">
+          <img src="https://woxsen.edu.in/uploads/A20230605060927.webp" class="img-fluid mb-3" alt="Event Image" />
+          <div class="event-title">
+            <input type="text" class="event-name form-control" placeholder="Event Name" value="Admin Area" disabled
+              required />
+          </div>
+          <div class="event-details">
+            <div>
+              Event Description:
+              <textarea class="event-description form-control" rows="3" placeholder="Event Description"
+                required></textarea>
+            </div>
+            <div>
+              Event Type:
+              <input type="text" class="event-type form-control" placeholder="Event Type" required />
+            </div>
+            <div>
+              Capacity:
+              <input type="number" class="capacity form-control" placeholder="Capacity" required />
+            </div>
+            <div>
+              Start Date/Time:
+              <input type="datetime-local" class="start-datetime form-control" required />
+            </div>
+            <div>
+              End Date/Time:
+              <input type="datetime-local" class="end-datetime form-control" required />
+            </div>
+            <div>
+              Ticket: $<input type="number" class="ticket-price form-control" placeholder="Ticket Price" required />
+            </div>
+            <div>
+              Venue:
+              <input type="text" class="event-type form-control" placeholder="Venue" required />
+            </div>
+          </div>
+          <button class="save-button">Save and Push</button>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="event-container">
+          <img src="https://woxsen.edu.in/uploads/A20231114111915.webp" class="img-fluid mb-3" alt="Event Image" />
+          <div class="event-title">
+            <input type="text" class="event-name form-control" placeholder="Event Name" value="Auditorium" disabled
+              required />
+          </div>
+          <div class="event-details">
+            <div>
+              Event Description:
+              <textarea class="event-description form-control" rows="3" placeholder="Event Description"
+                required></textarea>
+            </div>
+            <div>
+              Event Type:
+              <input type="text" class="event-type form-control" placeholder="Event Type" required />
+            </div>
+            <div>
+              Capacity:
+              <input type="number" class="capacity form-control" placeholder="Capacity" required />
+            </div>
+            <div>
+              Start Date/Time:
+              <input type="datetime-local" class="start-datetime form-control" required />
+            </div>
+            <div>
+              End Date/Time:
+              <input type="datetime-local" class="end-datetime form-control" required />
+            </div>
+            <div>
+              Ticket: $<input type="number" class="ticket-price form-control" placeholder="Ticket Price" required />
+            </div>
+            <div>
+              Venue:
+              <input type="text" class="event-type form-control" placeholder="Venue" required />
+            </div>
+          </div>
+          <button class="save-button">Save and Push</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="event-container">
+            <img
+              src="https://news.easyshiksha.com/wp-content/uploads/Woxen-Vithal-Gandhi-Centre-Library-Self-Lrearning-Place-pic-2-scaled.jpg"
+              class="img-fluid mb-3" alt="Event Image" />
+            <div class="event-title">
+              <input type="text" class="event-name form-control" placeholder="Event Name" value="Library" disabled
+                required />
+            </div>
+            <div class="event-details">
+              <div>
+                Event Description:
+                <textarea class="event-description form-control" rows="3" placeholder="Event Description"
+                  required></textarea>
+              </div>
+              <div>
+                Event Type:
+                <input type="text" class="event-type form-control" placeholder="Event Type" required />
+              </div>
+              <div>
+                Capacity:
+                <input type="number" class="capacity form-control" placeholder="Capacity" required />
+              </div>
+              <div>
+                Start Date/Time:
+                <input type="datetime-local" class="start-datetime form-control" required />
+              </div>
+              <div>
+                End Date/Time:
+                <input type="datetime-local" class="end-datetime form-control" required />
+              </div>
+              <div>
+                Ticket: $<input type="number" class="ticket-price form-control" placeholder="Ticket Price" required />
+              </div>
+              <div>
+                Venue:
+                <input type="text" class="event-type form-control" placeholder="Venue" required />
+              </div>
+            </div>
+            <button class="save-button">Save and Push</button>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="event-container">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEIwJaDltLfCncmFa8oYTN1bU5XM88TFO_Sl24uqjUO1A--gjiD1Ckn_HCfd50XTfRomg&usqp=CAU"
+              class="img-fluid mb-3" alt="Event Image" />
+            <div class="event-title">
+              <input type="text" class="event-name form-control" placeholder="Event Name" value="Oval" disabled
+                required />
+            </div>
+            <div class="event-details">
+              <div>
+                Event Description:
+                <textarea class="event-description form-control" rows="3" placeholder="Event Description"
+                  required></textarea>
+              </div>
+              <div>
+                Event Type:
+                <input type="text" class="event-type form-control" placeholder="Event Type" required />
+              </div>
+              <div>
+                Capacity:
+                <input type="number" class="capacity form-control" placeholder="Capacity" required />
+              </div>
+              <div>
+                Start Date/Time:
+                <input type="datetime-local" class="start-datetime form-control" required />
+              </div>
+              <div>
+                End Date/Time:
+                <input type="datetime-local" class="end-datetime form-control" required />
+              </div>
+              <div>
+                Ticket: $<input type="number" class="ticket-price form-control" placeholder="Ticket Price" required />
+              </div>
+              <div>
+                Venue:
+                <input type="text" class="event-type form-control" placeholder="Venue" required />
+              </div>
+            </div>
+            <button class="save-button">Save and Push</button>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="event-container">
+            <img src="https://www.collegebatch.com/static/clg-gallery/woxsen-school-of-business-hyderabad-273092.jpg"
+              class="img-fluid mb-3" alt="Event Image" />
+            <div class="event-title">
+              <input type="text" class="event-name form-control" placeholder="Event Name" value="Hostel Premises"
+                disabled required />
+            </div>
+            <div class="event-details">
+              <div>
+                Event Description:
+                <textarea class="event-description form-control" rows="3" placeholder="Event Description"
+                  required></textarea>
+              </div>
+              <div>
+                Event Type:
+                <input type="text" class="event-type form-control" placeholder="Event Type" required />
+              </div>
+              <div>
+                Capacity:
+                <input type="number" class="capacity form-control" placeholder="Capacity" required />
+              </div>
+              <div>
+                Start Date/Time:
+                <input type="datetime-local" class="start-datetime form-control" required />
+              </div>
+              <div>
+                End Date/Time:
+                <input type="datetime-local" class="end-datetime form-control" required />
+              </div>
+              <div>
+                Ticket: $<input type="number" class="ticket-price form-control" placeholder="Ticket Price" required />
+              </div>
+              <div>
+                Venue:
+                <input type="text" class="event-type form-control" placeholder="Venue" required />
+              </div>
+            </div>
+            <button class="save-button">Save and Push</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Include Bootstrap Datepicker JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <!-- Replace the existing script tag with this -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script>
+      document.querySelectorAll(".save-button").forEach((button, index) => {
+        button.addEventListener("click", async () => {
+          const container = button.closest(".event-container");
+          const eventName = container.querySelector(".event-title input").value;
+          const eventDescription = container.querySelector(".event-details textarea").value;
+          const eventType = container.querySelector(".event-details input[type='text']").value;
+          const capacity = container.querySelector(".event-details input[type='number']").value;
+          const startDateTime = container.querySelector(".event-details input[type='datetime-local']").value;
+          const endDateTime = container.querySelector(".event-details input[type='datetime-local']").value;
+          const ticketPrice = container.querySelector(".event-details input[type='number']").value;
+          const venueDetails = container.querySelector(".event-details input[type='text'][placeholder='Venue']").value;
+          const eventImage = container.querySelector(".event-container img").src;
+
+
+          // Check if any required field is empty
+          if (
+            eventName.trim() === "" ||
+            eventDescription.trim() === "" ||
+            eventType.trim() === "" ||
+            capacity.trim() === "" ||
+            startDateTime.trim() === "" ||
+            endDateTime.trim() === "" ||
+            ticketPrice.trim() === "" ||
+            venueDetails.trim() === "" ||
+            eventImage.trim() === ""
+          ) {
+            alert("Please fill in all required fields.");
+            return;
+          }
+
+          try {
+            const response = await fetch("/save-event", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                eventName,
+                eventDescription,
+                eventType,
+                capacity,
+                startDateTime,
+                endDateTime,
+                ticketPrice,
+                venueDetails,
+                eventImage,
+              }),
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+              alert(data.message);
+            } else {
+              alert("Failed to save event: " + data.message);
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("An error occurred. Please try again.");
+          }
+        });
+      });
+
+      document.querySelectorAll(".view-button").forEach((button, index) => {
+        button.addEventListener("click", () => {
+          const container = button.closest(".event-container");
+          const eventName = container.querySelector(".event-title input").value;
+          const eventDescription = container.querySelector(".event-details textarea").value;
+          const eventType = container.querySelector(".event-details input[type='text']").value;
+          const capacity = container.querySelector(".event-details input[type='number']").value;
+          const startDateTime = container.querySelector(".event-details input[type='datetime-local']").value;
+          const endDateTime = container.querySelector(".event-details input[type='datetime-local']").value;
+          const ticketPrice = container.querySelector(".event-details input[type='number']").value;
+          const venueDetails = container.querySelector(".event-details input[type='text'][placeholder='Venue']").value;
+          const eventImage = container.querySelector(".event-container img").src;
+
+          // Check if any required field is empty
+          if (
+            eventName.trim() === "" ||
+            eventDescription.trim() === "" ||
+            eventType.trim() === "" ||
+            capacity.trim() === "" ||
+            startDateTime.trim() === "" ||
+            endDateTime.trim() === "" ||
+            ticketPrice.trim() === "" ||
+            venueDetails.trim() === "" ||
+            eventImage.trim() === ""
+          ) {
+            alert("Please fill in all required fields.");
+            return;
+          }
+
+          // If all fields are filled, construct the event container HTML
+          const eventHTML = `
+                    <div class="event-container">
+                        <img src="${eventImage}" class="img-fluid mb-3" alt="Event Image" />
+                        <div class="event-title">${eventName}</div>
+                        <div class="event-details">
+                            <div>Event Description: ${eventDescription}</div>
+                            <div>Event Type: ${eventType}</div>
+                            <div>Capacity: ${capacity}</div>
+                            <div>Start Date/Time: ${startDateTime}</div>
+                            <div>End Date/Time: ${endDateTime}</div>
+                            <div>Ticket Price: $${ticketPrice}</div>
+                        </div>
+                    </div>
+                `;
+
+          // Save eventHTML to localStorage
+          localStorage.setItem(`event${index}`, eventHTML);
+
+          // Display the event container on the user dashboard section of the same page
+          displayEventContainer(eventHTML);
+        });
+      });
+
+      function displayEventContainer(eventHTML) {
+        // Create a div to hold the event container HTML
+        const eventDiv = document.createElement("div");
+        eventDiv.innerHTML = eventHTML;
+
+        // Append the event container to the eventContainers div
+        document.getElementById("eventContainers").appendChild(eventDiv);
+      }
+
+      // Load existing event containers from localStorage on page load
+      document.addEventListener("DOMContentLoaded", () => {
+        for (let i = 0; i < localStorage.length; i++) {
+          const key = localStorage.key(i);
+          if (key.startsWith("event")) {
+            const eventHTML = localStorage.getItem(key);
+            displayEventContainer(eventHTML);
+          }
+        }
+      });
+    </script>
+
+</body>
+
+</html>

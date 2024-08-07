@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Dashboard</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      .event-container {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .event-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .event-details {
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center mb-5">User Dashboard</h1>
+      <!-- Containers will be dynamically added here -->
+    </div>
+    <script>
+      // F// Function to fetch containers from the server and render them
+      // Function to fetch containers from the server and render them
+      function fetchAndRenderContainers() {
+        fetch("/get-containers")
+          .then((response) => response.json())
+          .then((containers) => {
+            const containerList = document.querySelector(".container");
+            containers.forEach((container) => {
+              const eventContainer = document.createElement("div");
+              eventContainer.classList.add("event-container");
+              eventContainer.innerHTML = `
+            <div class="event-title">${container.title}</div>
+            <div class="event-details">
+              <div>Start Date/Time: ${container.startDateTime}</div>
+              <div>End Date/Time: ${container.endDateTime}</div>
+            </div>
+            <button class="know-more-button">Know More</button>
+          `;
+              containerList.appendChild(eventContainer);
+            });
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      }
+
+      // Fetch and render containers when user.html loads
+      fetchAndRenderContainers();
+    </script>
+  </body>
+</html>

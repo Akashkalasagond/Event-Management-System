@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Signup</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        background-color: #f5f5f5;
+      }
+
+      .container {
+        max-width: 500px;
+        margin: 100px auto;
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        position: relative;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #333;
+      }
+
+      label {
+        font-weight: bold;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
+        border: none;
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 20px;
+        transition: border-bottom-color 0.3s ease-in-out;
+      }
+
+      input[type="text"]:focus,
+      input[type="email"]:focus,
+      input[type="password"]:focus {
+        border-bottom-color: #007bff;
+      }
+
+      .form-check-label {
+        margin-right: 20px;
+      }
+
+      button[type="submit"] {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        padding: 10px 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #0056b3;
+      }
+
+      .google-signin-btn {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .google-signin-btn img {
+        width: 20px;
+        margin-right: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Signup</h1>
+      <div class="google-signin-btn">
+        <img
+          src="https://developers.google.com/identity/images/g-logo.png"
+          alt="Google Logo"
+        />
+        <button class="btn btn-primary" onclick="redirectToGoogleSignup()">
+          Sign up with Google
+        </button>
+      </div>
+      <form
+        id="signupForm"
+        action="/signup"
+        method="POST"
+        onsubmit="return validateForm()"
+      >
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="name"
+            name="name"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Signup</button>
+        <a href="/login" class="btn btn-secondary btn-block"
+          >Already have an account? Login</a
+        >
+      </form>
+    </div>
+
+    <script>
+      function redirectToGoogleSignup() {
+        window.location.href = "/auth/google";
+      }
+
+      function validateForm() {
+        var name = document.getElementById("name").value;
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("password").value;
+
+        if (!name || !email || !password) {
+          alert("Please fill in all fields.");
+          return false;
+        }
+
+        if (password.length < 6) {
+          alert("Password must be at least 6 characters long.");
+          return false;
+        }
+
+        if (!validateEmail(email)) {
+          alert("Please enter a valid email address.");
+          return false;
+        }
+
+        return true;
+      }
+
+      function validateEmail(email) {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+      }
+
+      document
+        .getElementById("signupForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+          if (validateForm()) {
+            try {
+              const response = await fetch("/signup", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  name: document.getElementById("name").value,
+                  email: document.getElementById("email").value,
+                  password: document.getElementById("password").value,
+                }),
+              });
+
+              const data = await response.json();
+              if (response.ok) {
+                alert(data.message);
+                window.location.href = "/userdashboard"; // Redirect to user dashboard after successful signup
+              } else {
+                alert(data.message);
+              }
+            } catch (error) {
+              console.error("Error:", error);
+              alert("An error occurred. Please try again.");
+            }
+          }
+        });
+    </script>
+  </body>
+</html>
